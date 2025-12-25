@@ -9,10 +9,8 @@ options:
     azure-resource-provider-folder: "resource-manager"
     output-file: "{azure-resource-provider-folder}/{service-name}/{version-status}/{version}/iotoperations.json"
     use-read-only-status-schema: true
-  "@azure-tools/typespec-csharp":
+  "@azure-type/http-client-csharp-mgmt":
     emitter-output-dir: "{output-dir}/{service-dir}/{namespace}"
-    flavor: azure
-    clear-output-folder: true
     namespace: "Azure.ResourceManager.IotOperations"
   "@azure-tools/typespec-python":
     emitter-output-dir: "{output-dir}/{service-dir}/azure-mgmt-iotoperations"
