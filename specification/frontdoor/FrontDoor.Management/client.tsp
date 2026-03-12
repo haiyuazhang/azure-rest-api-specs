@@ -83,11 +83,7 @@ interface ProfilesOverrides {
 @@clientName(Experiment, "FrontDoorExperiment", "csharp");
 @@clientName(State, "FrontDoorExperimentState", "csharp");
 @@clientName(Endpoint, "FrontDoorExperimentEndpointProperties", "csharp");
-@@clientName(Timeseries, "FrontDoorTimeSeriesInfo", "csharp");
 @@clientName(WebApplicationFirewallPolicy, "FrontDoorWebApplicationFirewallPolicy", "csharp");
-@@clientName(HealthProbeSettingsModel, "FrontDoorHealthProbeSettingsData", "csharp");
-@@clientName(LoadBalancingSettingsModel, "FrontDoorLoadBalancingSettingsData", "csharp");
-@@clientName(RoutingRule, "RoutingRuleData", "csharp");
 @@clientName(PurgeParameters, "FrontDoorEndpointPurgeContent", "csharp");
 @@clientName(ValidateCustomDomainInput, "FrontDoorValidateCustomDomainContent", "csharp");
 @@clientName(ValidateCustomDomainOutput, "FrontDoorValidateCustomDomainResult", "csharp");
@@ -105,7 +101,6 @@ interface ProfilesOverrides {
 @@clientName(Availability, "FrontDoorNameAvailabilityState", "csharp");
 @@clientName(Backend, "FrontDoorBackend", "csharp");
 @@clientName(PrivateEndpointStatus, "BackendPrivateEndpointStatus", "csharp");
-@@clientName(BackendPool, "FrontDoorBackendPool", "csharp");
 @@clientName(FrontDoorCertificateType, "FrontDoorEndpointConnectionCertificateType", "csharp");
 @@clientName(MatchCondition, "WebApplicationRuleMatchCondition", "csharp");
 @@clientName(MatchVariable, "WebApplicationRuleMatchVariable", "csharp");
@@ -130,7 +125,6 @@ interface ProfilesOverrides {
 @@clientName(ExperimentProperties.endpointB, "ExperimentEndpointB", "csharp");
 @@clientName(TimeseriesProperties.startDateTimeUTC, "StartOn", "csharp");
 @@clientName(TimeseriesProperties.endDateTimeUTC, "EndOn", "csharp");
-@@clientName(WebApplicationFirewallPolicyProperties.customRules, "CustomRuleList", "csharp");
 @@clientName(ValidateCustomDomainOutput.customDomainValidated, "IsCustomDomainValidated", "csharp");
 @@clientName(BackendPoolsSettings.sendRecvTimeoutSeconds, "SendRecvTimeoutInSeconds", "csharp");
 @@clientName(MatchCondition.negateCondition, "IsNegateCondition", "csharp");
@@ -162,3 +156,188 @@ interface ProfilesOverrides {
 @@clientName(TimeseriesProperties.timeseriesType, "TimeSeriesType", "csharp");
 @@clientName(TimeseriesProperties.timeseriesData, "TimeSeriesData", "csharp");
 @@clientName(TimeseriesDataPoint.dateTimeUTC, "DateTimeUtc", "csharp");
+@@clientName(ManagedRuleExclusionSelectorMatchOperator.Equals, "EqualsValue", "csharp");
+@@clientName(ScrubbingRuleEntryMatchOperator.Equals, "EqualsValue", "csharp");
+@@clientName(WebApplicationFirewallPolicyProperties.customRules, "CustomRuleList", "csharp");
+
+// Fix 5: ResourceIdentifier property types (arm-id SubResource references)
+@@alternateType(KeyVaultCertificateSourceParametersVault.id, Azure.Core.armResourceIdentifier, "csharp");
+@@alternateType(ForwardingConfiguration.backendPool, Azure.Core.armResourceIdentifier, "csharp");
+@@alternateType(BackendPoolUpdateParameters.healthProbeSettings, Azure.Core.armResourceIdentifier, "csharp");
+@@alternateType(BackendPoolUpdateParameters.loadBalancingSettings, Azure.Core.armResourceIdentifier, "csharp");
+@@alternateType(RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.id, Azure.Core.armResourceIdentifier, "csharp");
+
+// Fix 6: DateTimeOffset property types (string → utcDateTime)
+@@alternateType(TimeseriesDataPoint.dateTimeUTC, utcDateTime, "csharp");
+@@alternateType(TimeseriesProperties.startDateTimeUTC, utcDateTime, "csharp");
+@@alternateType(TimeseriesProperties.endDateTimeUTC, utcDateTime, "csharp");
+@@alternateType(LatencyMetric.endDateTimeUTC, utcDateTime, "csharp");
+
+@@alternateType(FrontDoor, FrontDoorReplacement, "csharp");
+@@clientName(FrontDoor, "FrontDoorTemp", "csharp");
+@@clientName(FrontDoorReplacement, "FrontDoor", "csharp");
+
+@@alternateType(Experiment, ExperimentReplacement, "csharp");
+@@clientName(Experiment, "ExperimentTemp", "csharp");
+@@clientName(ExperimentReplacement, "FrontDoorExperiment", "csharp");
+
+@@alternateType(Profile, ProfileReplacement, "csharp");
+@@clientName(Profile, "ProfileTemp", "csharp");
+@@clientName(ProfileReplacement, "FrontDoorNetworkExperimentProfile", "csharp");
+
+@@alternateType(WebApplicationFirewallPolicy, WebApplicationFirewallPolicyReplacement, "csharp");
+@@clientName(WebApplicationFirewallPolicy, "WebApplicationFirewallPolicyTemp", "csharp");
+@@clientName(WebApplicationFirewallPolicyReplacement, "FrontDoorWebApplicationFirewallPolicy", "csharp");
+
+@@clientName(Microsoft.Network.Resource, "FrontDoorResourceModel", "csharp");
+
+@@alternateType(RulesEngine, RulesEngineReplacement, "csharp");
+@@clientName(RulesEngine, "RulesEngineTemp", "csharp");
+@@clientName(RulesEngineReplacement, "FrontDoorRulesEngine", "csharp");
+
+@@alternateType(FrontendEndpoint, FrontendEndpointReplacement, "csharp");
+@@clientName(FrontendEndpoint, "FrontendEndpointTemp", "csharp");
+@@clientName(FrontendEndpointReplacement, "FrontendEndpoint", "csharp");
+
+@@alternateType(Azure.ResourceManager.CommonTypes.Resource.id, Azure.Core.armResourceIdentifier, "csharp");
+
+// Flatten properties on replacement models (back-compat.tsp targets originals, not replacements)
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(FrontDoorReplacement.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(ExperimentReplacement.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(ProfileReplacement.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(WebApplicationFirewallPolicyReplacement.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(RulesEngineReplacement.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(FrontendEndpointReplacement.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(RoutingRule.properties, "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(RoutingRuleUpdateParameters.rulesEngine, "csharp");
+
+// Response-only type replacements: restore TrackedResourceData base
+@@alternateType(Timeseries, TimeseriesReplacement, "csharp");
+@@clientName(Timeseries, "TimeseriesTemp", "csharp");
+@@clientName(TimeseriesReplacement, "FrontDoorTimeSeriesInfo", "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(TimeseriesReplacement.properties);
+
+@@alternateType(LatencyScorecard, LatencyScorecardReplacement, "csharp");
+@@clientName(LatencyScorecard, "LatencyScorecardTemp", "csharp");
+@@clientName(LatencyScorecardReplacement, "LatencyScorecard", "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(LatencyScorecardReplacement.properties);
+
+@@alternateType(ManagedRuleSetDefinition, ManagedRuleSetDefinitionReplacement, "csharp");
+@@clientName(ManagedRuleSetDefinition, "ManagedRuleSetDefinitionTemp", "csharp");
+@@clientName(ManagedRuleSetDefinitionReplacement, "ManagedRuleSetDefinition", "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(ManagedRuleSetDefinitionReplacement.properties);
+
+@@alternateType(PreconfiguredEndpoint, PreconfiguredEndpointReplacement, "csharp");
+@@clientName(PreconfiguredEndpoint, "PreconfiguredEndpointTemp", "csharp");
+@@clientName(PreconfiguredEndpointReplacement, "PreconfiguredEndpoint", "csharp");
+#suppress "@azure-tools/typespec-azure-core/no-legacy-usage" "migration: restore flattened properties on replacement models"
+@@Azure.ClientGenerator.Core.Legacy.flattenProperty(PreconfiguredEndpointReplacement.properties);
+
+@@clientName(ForwardingConfiguration.backendPool, "BackendPoolId", "csharp");
+@@clientName(BackendPoolUpdateParameters.healthProbeSettings, "HealthProbeSettingsId", "csharp");
+@@clientName(BackendPoolUpdateParameters.loadBalancingSettings, "LoadBalancingSettingsId", "csharp");
+
+// Fix 8: Enum member name casing (TypeSpec ALL_CAPS → baseline PascalCase)
+@@clientName(EndpointType.CDN, "Cdn", "csharp");
+@@clientName(FrontDoorHealthProbeMethod.HEAD, "Head", "csharp");
+@@clientName(MinimumTLSVersion.`1.0`, "Tls1_0", "csharp");
+@@clientName(MinimumTLSVersion.`1.2`, "Tls1_2", "csharp");
+@@clientName(ActionType.CAPTCHA, "Captcha", "csharp");
+
+// Fix 9: Property renames to match baseline
+@@clientName(CheckNameAvailabilityInput.type, "ResourceType", "csharp");
+@@clientName(FrontendEndpointUpdateParameters.sessionAffinityTtlSeconds, "SessionAffinityTtlInSeconds", "csharp");
+
+// Fix 10: ETag type (string → Azure.ETag)
+@@alternateType(ProfileReplacement.etag, Azure.Core.eTag, "csharp");
+@@alternateType(WebApplicationFirewallPolicyReplacement.etag, Azure.Core.eTag, "csharp");
+
+// Fix 11: Uri type for RedirectUrl (string → System.Uri)
+@@alternateType(PolicySettings.redirectUrl, url, "csharp");
+
+// Fix 12: Operation renames (Reports operations on Experiment resource)
+@@clientName(Experiments.getTimeseries, "GetTimeSeriesReport", "csharp");
+@@clientName(Experiments.getLatencyScorecards, "GetLatencyScorecardsReport", "csharp");
+
+// Fix 12b: Operation parameter renames and type fixes
+@@clientName(GetTimeseriesParameters.startDateTimeUTC, "startOn", "csharp");
+@@clientName(GetTimeseriesParameters.endDateTimeUTC, "endOn", "csharp");
+@@clientName(GetTimeseriesParameters.timeseriesType, "timeSeriesType", "csharp");
+@@clientName(GetLatencyScorecardsParameters.endDateTimeUTC, "endOn", "csharp");
+@@alternateType(GetLatencyScorecardsParameters.endDateTimeUTC, utcDateTime, "csharp");
+
+// Fix 13: PreconfiguredEndpoints list operation rename
+@@clientName(Profiles.preconfiguredEndpointsList, "GetPreconfiguredEndpoints", "csharp");
+
+@@usage(TimeseriesReplacement, Usage.input | Usage.output);
+@@usage(LatencyScorecardReplacement, Usage.input | Usage.output);
+@@usage(ManagedRuleSetDefinitionReplacement, Usage.input | Usage.output);
+@@usage(PreconfiguredEndpointReplacement, Usage.input | Usage.output);
+@@usage(TimeseriesDataPoint, Usage.input | Usage.output);
+@@usage(LatencyMetric, Usage.input | Usage.output);
+@@usage(RouteConfiguration, Usage.input | Usage.output);
+
+@@alternateType(SubResource, SubResourceReplacement, "csharp");
+@@clientName(SubResource, "SubResourceTemp", "csharp");
+@@clientName(SubResourceReplacement, "FrontDoorResourceData", "csharp");
+@@alternateType(SubResourceReplacement.id, Azure.Core.armResourceIdentifier, "csharp");
+@@usage(SubResourceReplacement, Usage.input | Usage.output);
+@@usage(ManagedRuleGroupDefinition, Usage.input | Usage.output);
+@@usage(ManagedRuleDefinition, Usage.input | Usage.output);
+
+
+// we add this model in this namespace in order to replace some models with this model via alternateType decorator
+namespace Azure.ResourceManager.Models {
+  /** represents a reference to an existing resource by its id */
+  model SubResource {
+    /** the id */
+    id?: Azure.Core.armResourceIdentifier;
+  }
+}
+namespace Azure.ResourceManager.Models {
+  /** represents a reference to an existing resource by its id */
+  model WritableSubResource {
+    /** the id */
+    id?: Azure.Core.armResourceIdentifier;
+  }
+}
+@@alternateType(FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink, Azure.ResourceManager.Models.WritableSubResource, "csharp");
+@@alternateType(RoutingRuleUpdateParameters.rulesEngine, Azure.ResourceManager.Models.WritableSubResource, "csharp");
+
+
+@@alternateType(FrontendEndpointLink, Azure.ResourceManager.Models.SubResource, "csharp");
+@@alternateType(RoutingRuleLink, Azure.ResourceManager.Models.SubResource, "csharp");
+@@alternateType(SecurityPolicyLink, Azure.ResourceManager.Models.SubResource, "csharp");
+
+
+@@clientName(ManagedRuleSetsOperationGroup.list, "GetManagedRuleSets", "csharp");
+
+
+@@clientName(RoutingRule, "RoutingRuleTemp", "csharp");
+
+@@alternateType(RoutingRule, RoutingRuleReplacement, "csharp");
+@@clientName(RoutingRuleReplacement, "RoutingRuleData", "csharp");
+
+
+@@clientName(LoadBalancingSettingsModel, "LoadBalancingSettingsModelTemp", "csharp");
+@@alternateType(LoadBalancingSettingsModel, LoadBalancingSettingsModelReplacement, "csharp");
+@@clientName(LoadBalancingSettingsModelReplacement, "FrontDoorLoadBalancingSettingsData", "csharp");
+
+@@clientName(HealthProbeSettingsModel, "HealthProbeSettingsModelTemp", "csharp");
+@@alternateType(HealthProbeSettingsModel, HealthProbeSettingsModelReplacement, "csharp");
+@@clientName(HealthProbeSettingsModelReplacement, "FrontDoorHealthProbeSettingsData", "csharp");
+
+@@clientName(BackendPool, "BackendPoolTemp", "csharp");
+@@alternateType(BackendPool, BackendPoolReplacement, "csharp");
+@@clientName(BackendPoolReplacement, "FrontDoorBackendPool", "csharp");

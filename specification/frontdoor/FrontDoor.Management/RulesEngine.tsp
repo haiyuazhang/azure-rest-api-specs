@@ -30,6 +30,19 @@ model RulesEngine extends BasicResource {
   name: string;
 }
 
+/**
+ * A rules engine configuration containing a list of rules that will run to modify the runtime behavior of the request and response.
+ */
+@parentResource(FrontDoor)
+model RulesEngineReplacement is Azure.ResourceManager.ProxyResource<RulesEngineProperties> {
+  ...ResourceNameParameter<
+    Resource = RulesEngine,
+    KeyName = "rulesEngineName",
+    SegmentName = "rulesEngines",
+    NamePattern = "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
+  >;
+}
+
 @armResourceOperations(#{ omitTags: true })
 interface RulesEngines {
   /**

@@ -30,6 +30,19 @@ model Experiment extends Resource {
   name: string;
 }
 
+/**
+ * Defines the properties of an Experiment
+ */
+@parentResource(Profile)
+model ExperimentReplacement is Azure.ResourceManager.TrackedResource<ExperimentProperties> {
+  ...ResourceNameParameter<
+    Resource = Experiment,
+    KeyName = "experimentName",
+    SegmentName = "Experiments",
+    NamePattern = "^[a-zA-Z0-9_\\-\\(\\)\\.]*[^\\.]$"
+  >;
+}
+
 @armResourceOperations(#{ omitTags: true })
 interface Experiments {
   /**

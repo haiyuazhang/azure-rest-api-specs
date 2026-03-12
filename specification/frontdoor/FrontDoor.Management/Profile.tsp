@@ -34,6 +34,24 @@ model Profile extends ResourcewithSettableName {
   etag?: string;
 }
 
+/**
+ * Defines an Network Experiment Profile and lists of Experiments
+ */
+model ProfileReplacement is Azure.ResourceManager.TrackedResource<ProfileProperties> {
+  ...ResourceNameParameter<
+    Resource = Profile,
+    KeyName = "profileName",
+    SegmentName = "NetworkExperimentProfiles",
+    NamePattern = "^[a-zA-Z0-9_\\-\\(\\)\\.]*[^\\.]$"
+  >;
+
+  /**
+   * Gets a unique read-only string that changes whenever the resource is updated.
+   */
+  #suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-invalid-envelope-property" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+  etag?: string;
+}
+
 @armResourceOperations(#{ omitTags: true })
 interface Profiles {
   /**

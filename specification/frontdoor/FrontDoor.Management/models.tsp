@@ -3670,3 +3670,97 @@ model RulesEngineListResult is Azure.Core.Page<RulesEngine>;
 @@Azure.ClientGenerator.Core.clientName(ScrubbingRuleEntryState,
   "scrubbingRuleEntryState"
 );
+
+// Replacement models for response-only types that need TrackedResourceData base
+/**
+ * Defines the Timeseries
+ */
+model TimeseriesReplacement is Azure.ResourceManager.TrackedResource<TimeseriesProperties> {
+  @doc("Resource name.")
+  @key("timeseriesName")
+  @segment("timeseries")
+  @visibility(Lifecycle.Read)
+  name: string;
+}
+
+/**
+ * Defines the LatencyScorecard
+ */
+model LatencyScorecardReplacement is Azure.ResourceManager.TrackedResource<LatencyScorecardProperties> {
+  @doc("Resource name.")
+  @key("latencyScorecardName")
+  @segment("latencyScorecards")
+  @visibility(Lifecycle.Read)
+  name: string;
+}
+
+/**
+ * Describes the a managed rule set definition.
+ */
+model ManagedRuleSetDefinitionReplacement is Azure.ResourceManager.TrackedResource<ManagedRuleSetDefinitionProperties> {
+  @doc("Resource name.")
+  @key("managedRuleSetDefinitionName")
+  @segment("managedRuleSetDefinitions")
+  @visibility(Lifecycle.Read)
+  name: string;
+}
+
+/**
+ * Defines the properties of a preconfigured endpoint
+ */
+model PreconfiguredEndpointReplacement is Azure.ResourceManager.TrackedResource<PreconfiguredEndpointProperties> {
+  @doc("Resource name.")
+  @key("preconfiguredEndpointName")
+  @segment("preconfiguredEndpoints")
+  @visibility(Lifecycle.Read)
+  name: string;
+}
+
+@doc("Common properties for FrontDoor sub-resources.")
+model SubResourceReplacement {
+  @doc("Resource ID.")
+  id?: Azure.Core.armResourceIdentifier;
+
+  @doc("Resource name.")
+  name?: string;
+
+  @doc("Resource type.")
+  @visibility(Lifecycle.Read)
+  resourceType?: Azure.Core.armResourceType;
+
+   /**
+   * Resource status.
+   */
+}
+
+/**
+ * A routing rule represents a specification for traffic to treat and where to send it, along with health probe information.
+ */
+#suppress "@azure-tools/typespec-azure-core/composition-over-inheritance" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+model RoutingRuleReplacement extends SubResourceReplacement {
+   ...OmitProperties<RoutingRule, "id" | "name" | "type">;
+}
+
+/**
+ * Load balancing settings for a backend pool
+ */
+#suppress "@azure-tools/typespec-azure-core/composition-over-inheritance" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+model LoadBalancingSettingsModelReplacement extends SubResourceReplacement {
+   ...OmitProperties<LoadBalancingSettingsModel, "id" | "name" | "type">;
+}
+
+/**
+ * Health probe settings for a backend pool
+ */
+#suppress "@azure-tools/typespec-azure-core/composition-over-inheritance" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+model HealthProbeSettingsModelReplacement extends SubResourceReplacement {
+   ...OmitProperties<HealthProbeSettingsModel, "id" | "name" | "type">;
+}
+
+/**
+ * A backend pool represents a collection of backend endpoints for load balancing and health probe purposes.
+ */
+#suppress "@azure-tools/typespec-azure-core/composition-over-inheritance" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+model BackendPoolReplacement extends SubResourceReplacement {
+   ...OmitProperties<BackendPool, "id" | "name" | "type">;
+}

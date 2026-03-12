@@ -39,6 +39,29 @@ model WebApplicationFirewallPolicy extends Resource {
   sku?: Sku;
 }
 
+/**
+ * Defines web application firewall policy.
+ */
+model WebApplicationFirewallPolicyReplacement is Azure.ResourceManager.TrackedResource<WebApplicationFirewallPolicyProperties> {
+  ...ResourceNameParameter<
+    Resource = WebApplicationFirewallPolicy,
+    KeyName = "policyName",
+    SegmentName = "FrontDoorWebApplicationFirewallPolicies"
+  >;
+
+  /**
+   * Gets a unique read-only string that changes whenever the resource is updated.
+   */
+  #suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-invalid-envelope-property" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+  etag?: string;
+
+  /**
+   * The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not specified.
+   */
+  #suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-invalid-envelope-property" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+  sku?: Sku;
+}
+
 @armResourceOperations
 interface WebApplicationFirewallPolicies {
   /**

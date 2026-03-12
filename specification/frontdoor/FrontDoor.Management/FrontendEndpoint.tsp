@@ -30,6 +30,19 @@ model FrontendEndpoint extends BasicResourceWithSettableIDName {
   name: string;
 }
 
+/**
+ * A frontend endpoint used for routing.
+ */
+@parentResource(FrontDoor)
+model FrontendEndpointReplacement is Azure.ResourceManager.ProxyResource<FrontendEndpointProperties> {
+  ...ResourceNameParameter<
+    Resource = FrontendEndpoint,
+    KeyName = "frontendEndpointName",
+    SegmentName = "frontendEndpoints",
+    NamePattern = "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
+  >;
+}
+
 @armResourceOperations(#{ omitTags: true })
 interface FrontendEndpoints {
   /**

@@ -28,6 +28,18 @@ model FrontDoor extends Resource {
   name: string;
 }
 
+/**
+ * Front Door represents a collection of backend endpoints to route traffic to along with rules that specify how traffic is sent there.
+ */
+model FrontDoorReplacement is Azure.ResourceManager.TrackedResource<FrontDoorProperties> {
+  ...ResourceNameParameter<
+    Resource = FrontDoor,
+    KeyName = "frontDoorName",
+    SegmentName = "frontDoors",
+    NamePattern = "^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$"
+  >;
+}
+
 @armResourceOperations
 interface FrontDoors {
   /**
